@@ -1,0 +1,116 @@
+<!DOCTYPE html><html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Shadow Quest</title>
+  <style>
+    body {
+      margin: 0;
+      overflow: hidden;
+      background: yellow;
+    }
+    canvas {
+      display: block;
+      margin: auto;
+      background: linear-gradient(yellow, orange);
+    }
+  </style>
+</head>
+<body>
+  <canvas id="gameCanvas" width="600" height="400"></canvas>
+  <script>
+    const canvas = document.getElementById("gameCanvas");
+    const ctx = canvas.getContext("2d");let player = {
+  x: 50,
+  y: 300,
+  width: 30,
+  height: 30,
+  color: "black",
+  dy: 0,
+  jumpPower: -10,
+  gravity: 0.5,
+  onGround: false,
+};
+
+let groundHeight = 50;
+let obstacles = [
+  {x: 300, y: 350, width: 40, height: 50},
+  {x: 450, y: 320, width: 30, height: 80},
+];
+
+let keys = {};
+
+document.addEventListener("keydown", (e) => keys[e.code] = true);
+document.addEventListener("keyup", (e) => keys[e.code] = false);
+
+function update() {
+  // Apply gravity
+  player.dy += player.gravity;
+  player.y += player.dy;
+
+  // Ground collision
+  if (player.y + player.height > canvas.height - groundHeight) {
+    player.y = canvas.height - groundHeight - player.height;
+    player.dy = 0;
+    player.onGround = true;
+  } else {
+    player.onGround = false;
+  }
+
+  // Movement
+  if (keys["ArrowRight"]) player.x += 4;
+  if (keys["ArrowLeft"]) player.x -= 4;
+
+  // Jump
+  if (keys["Space"] && player.onGround) {
+    player.dy = player.jumpPower;
+  }
+
+  // Collision with obstacles
+  for (let obs of obstacles) {
+    if (player.x < obs.x + obs.width &&
+        player.x + player.width > obs.x &&
+        player.y < obs.y + obs.height &&
+        player.y + player.height > obs.y) {
+      // Reset position on collision (rage mechanic)
+      player.x = 50;
+      player.y = 300;
+      player.dy = 0;
+    }
+  }
+}
+
+function draw() {
+  ctx.clearRect(0, 0, canvas.width, canvas.height);
+
+  // Ground
+  ctx.fillStyle = "red";
+  ctx.fillRect(0, canvas.height - groundHeight, canvas.width, groundHeight);
+
+  // Player
+  ctx.fillStyle = player.color;
+  ctx.fillRect(player.x, player.y, player.width, player.height);
+
+  // Eyes
+  ctx.fillStyle = "red";
+  ctx.fillRect(player.x + 7, player.y + 10, 5, 5);
+  ctx.fillRect(player.x + 18, player.y + 10, 5, 5);
+
+  // Obstacles
+  ctx.fillStyle = "black";
+  for (let obs of obstacles) {
+    ctx.fillRect(obs.x, obs.y, obs.width, obs.height);
+  }
+}
+
+function gameLoop() {
+  update();
+  draw();
+  requestAnimationFrame(gameLoop);
+}
+
+gameLoop();
+
+  </script>
+</body>
+</html>

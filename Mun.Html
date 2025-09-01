@@ -1,0 +1,286 @@
+<!DOCTYPE html><html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Devil Movies – Trailers Hub</title>
+  <meta name="description" content="Devil Movies – Watch 100 movie trailers with search, categories, and a slick cinematic UI."/>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;600;800&family=Cinzel:wght@600;800&display=swap" rel="stylesheet">
+  <style>
+    :root{
+      --bg:#0b0c10;
+      --card:#12131a;
+      --muted:#9aa0a6;
+      --text:#e6e6e9;
+      --accent:#ff2d55; /* neon red */
+      --accent2:#00e6ff; /* neon blue */
+      --ring: 0 0 0 2px rgba(255,45,85,.35), 0 0 25px rgba(255,45,85,.35);
+      --glow: 0 12px 30px rgba(0,230,255,.15), 0 0 40px rgba(255,45,85,.12) inset;
+      --radius: 18px;
+    }
+    *{box-sizing:border-box}
+    html,body{margin:0;background:radial-gradient(1200px 600px at 10% -10%,rgba(0,230,255,.08),transparent),
+                               radial-gradient(800px 500px at 100% 0,rgba(255,45,85,.08),transparent),
+                               var(--bg);
+               color:var(--text);font-family:Montserrat,system-ui,Segoe UI,Roboto,Arial,sans-serif}
+    a{color:inherit;text-decoration:none}/* Header */
+.nav{position:sticky;top:0;z-index:30;backdrop-filter:saturate(160%) blur(10px);
+     background:linear-gradient(to bottom,rgba(11,12,16,.85),rgba(11,12,16,.55));
+     border-bottom:1px solid rgba(255,255,255,.06)}
+.nav-inner{max-width:1200px;margin:auto;display:flex;align-items:center;gap:14px;padding:14px 18px}
+.brand{display:flex;align-items:center;gap:12px}
+.logo{width:38px;height:38px;border-radius:12px;background:radial-gradient(circle at 30% 30%,#ff7a93, #a0002b);
+      box-shadow:0 0 25px rgba(255,45,85,.5), inset 0 0 30px rgba(255,255,255,.12)}
+.title{font-family:Cinzel, serif;font-weight:800;letter-spacing:.5px}
+.badge{font-size:.75rem;padding:6px 10px;border-radius:999px;border:1px solid rgba(255,255,255,.1);color:var(--muted)}
+.search-wrap{display:flex;align-items:center;gap:10px;margin-left:auto}
+.search{width:260px;max-width:50vw;background:#0f1016;border:1px solid rgba(255,255,255,.08);
+        padding:10px 12px;border-radius:12px;color:var(--text)}
+.category-bar{display:flex;flex-wrap:wrap;gap:8px;margin-left:12px}
+.chip{cursor:pointer;padding:8px 12px;border-radius:999px;border:1px solid rgba(255,255,255,.1);color:#cfd3d7;font-size:.85rem}
+.chip.active{border-color:transparent;background:linear-gradient(90deg,rgba(255,45,85,.25),rgba(0,230,255,.25));
+             box-shadow:var(--ring)}
+
+/* Hero */
+.hero{max-width:1200px;margin:24px auto 8px;display:grid;grid-template-columns:1.2fr .8fr;gap:18px;padding:0 18px}
+.hero-card{position:relative;background:linear-gradient(180deg,rgba(18,19,26,.9),rgba(18,19,26,.6));
+           border:1px solid rgba(255,255,255,.06);border-radius:var(--radius);overflow:hidden;box-shadow:var(--glow)}
+.hero-media{aspect-ratio:16/9;width:100%;object-fit:cover;display:block;filter:saturate(105%)}
+.hero-info{padding:16px 16px 18px}
+.hero-title{font-family:Cinzel, serif;font-size:1.6rem;margin:0 0 6px}
+.meta{color:var(--muted);font-size:.9rem}
+.play-cta{margin-top:12px;display:inline-flex;align-items:center;gap:10px;padding:10px 14px;border-radius:12px;
+          background:linear-gradient(90deg,rgba(255,45,85,.35),rgba(0,230,255,.35));border:0;color:white;cursor:pointer;
+          box-shadow:var(--ring)}
+.hero-side{display:grid;gap:12px}
+.side-card{display:flex;gap:12px;padding:12px;background:linear-gradient(180deg,rgba(18,19,26,.85),rgba(18,19,26,.6));
+           border:1px solid rgba(255,255,255,.08);border-radius:16px;align-items:center}
+.thumb{width:120px;aspect-ratio:16/9;border-radius:10px;object-fit:cover}
+
+/* Grid */
+.wrap{max-width:1200px;margin:18px auto;padding:0 18px}
+.grid{display:grid;grid-template-columns:repeat(5,1fr);gap:16px}
+@media (max-width:1100px){.grid{grid-template-columns:repeat(4,1fr)}}
+@media (max-width:900px){.grid{grid-template-columns:repeat(3,1fr)}}
+@media (max-width:640px){.grid{grid-template-columns:repeat(2,1fr)}}
+.card{background:linear-gradient(180deg,rgba(18,19,26,.9),rgba(18,19,26,.6));border:1px solid rgba(255,255,255,.06);
+      border-radius:16px;overflow:hidden;transition:.25s transform, .25s box-shadow;position:relative}
+.poster{width:100%;aspect-ratio:2/3;object-fit:cover;display:block;filter:saturate(105%)}
+.card:hover{transform:translateY(-4px);box-shadow:0 10px 30px rgba(0,230,255,.1), 0 0 0 1px rgba(255,45,85,.12)}
+.card-body{padding:12px}
+.title-sm{font-weight:700;margin:0 0 4px}
+.muted{color:var(--muted);font-size:.85rem}
+.btn{margin-top:10px;width:100%;padding:10px;border-radius:10px;border:0;cursor:pointer;color:white;
+     background:linear-gradient(90deg,rgba(255,45,85,.35),rgba(0,230,255,.35));box-shadow:var(--ring)}
+
+/* Pagination */
+.pager{display:flex;justify-content:center;gap:8px;margin:24px 0}
+.page-btn{padding:8px 12px;border-radius:10px;border:1px solid rgba(255,255,255,.1);background:#0f1016;color:#eaeaf0;cursor:pointer}
+.page-btn.active{background:linear-gradient(90deg,rgba(255,45,85,.35),rgba(0,230,255,.35));border-color:transparent;box-shadow:var(--ring)}
+
+/* Modal */
+.modal{position:fixed;inset:0;display:none;place-items:center;background:rgba(0,0,0,.7);z-index:50}
+.modal.open{display:grid}
+.modal-content{width:min(960px,92vw);background:#0c0d12;border:1px solid rgba(255,255,255,.1);border-radius:16px;padding:10px}
+.modal video,.modal iframe{width:100%;aspect-ratio:16/9;border:0;border-radius:12px}
+.modal-top{display:flex;justify-content:space-between;align-items:center;padding:6px 6px 10px}
+.close{background:#151624;border:1px solid rgba(255,255,255,.12);color:#e6e6e9;padding:8px 12px;border-radius:10px;cursor:pointer}
+footer{max-width:1200px;margin:24px auto 80px;color:#adb3ba;text-align:center;padding:0 18px}
+
+  </style>
+</head>
+<body>
+  <!-- NAV -->
+  <header class="nav">
+    <div class="nav-inner">
+      <div class="brand">
+        <div class="logo" aria-hidden="true"></div>
+        <div>
+          <div class="title">DEVIL MOVIES</div>
+          <div class="badge">100 Trailers • Cinematic Hub</div>
+        </div>
+      </div>
+      <div class="search-wrap">
+        <input id="search" class="search" placeholder="Search movies… (title, year, genre)" />
+        <div class="category-bar" id="categoryBar"></div>
+      </div>
+    </div>
+  </header>  <!-- HERO -->  <section class="hero" id="hero"></section>  <!-- GRID -->  <main class="wrap">
+    <div class="grid" id="grid"></div>
+    <div class="pager" id="pager"></div>
+  </main>  <footer>
+    © 2025 Devil Movies • Built with ❤️ for trailer lovers
+  </footer>  <!-- MODAL -->  <div class="modal" id="modal">
+    <div class="modal-content">
+      <div class="modal-top">
+        <strong id="modalTitle">Trailer</strong>
+        <button class="close" id="closeModal">Close ✕</button>
+      </div>
+      <div id="playerWrap"></div>
+    </div>
+  </div>  <script>
+    // ====== DATA GENERATION (100 MOVIES) ======
+    const GENRES = ["Action","Comedy","Horror","Sci-Fi","Romance","Thriller","Drama","Animation","Adventure","Mystery"];
+    const YT_IDS = [
+      "YoHD9XEInc0","EXeTwQWrcwY","8ugaeA-nMTc","hA6hldpSTF8","KPLWWIOCOOQ",
+      "TcMBFSGVi1c","6ZfuNTqbHE8","tCOIQkb2KpU","2LqzF5WauAw","Q0CbN8sfihY",
+      "sY1S34973zA","zSWdZVtXT7E","pWdKf3MneyI","BvP4RIqSbiw","fJuvFVk2A3c"
+    ];
+
+    const movies = [];
+    for(let i=1;i<=100;i++){
+      const g = GENRES[i % GENRES.length];
+      const year = 2005 + (i % 20); // 2005–2024
+      const yt = YT_IDS[i % YT_IDS.length];
+      const title = `Devil Movie ${i}`;
+      movies.push({
+        id:i,
+        title,
+        year,
+        genre:g,
+        description:`A gripping ${g.toLowerCase()} experience from Devil Movies roster. Trailer ${i}.`,
+        poster:`https://placehold.co/600x900/png?text=${encodeURIComponent(title)}`,
+        trailer:`https://www.youtube.com/embed/${yt}`
+      });
+    }
+
+    // ====== STATE ======
+    let currentGenre = 'All';
+    let currentQuery = '';
+    let page = 1;
+    const PER_PAGE = 20;
+
+    // ====== UI HELPERS ======
+    const grid = document.getElementById('grid');
+    const pager = document.getElementById('pager');
+    const hero = document.getElementById('hero');
+    const categoryBar = document.getElementById('categoryBar');
+
+    function byQuery(m){
+      const q = currentQuery.trim().toLowerCase();
+      if(!q) return true;
+      return (
+        m.title.toLowerCase().includes(q) ||
+        String(m.year).includes(q) ||
+        m.genre.toLowerCase().includes(q)
+      );
+    }
+    function byGenre(m){
+      return currentGenre==='All' || m.genre===currentGenre;
+    }
+
+    function renderCategories(){
+      const cats = ['All',...GENRES];
+      categoryBar.innerHTML = '';
+      cats.forEach(c=>{
+        const el = document.createElement('button');
+        el.className = 'chip' + (c===currentGenre?' active':'');
+        el.textContent = c;
+        el.onclick = ()=>{ currentGenre=c; page=1; renderAll(); };
+        categoryBar.appendChild(el);
+      });
+    }
+
+    function renderHero(list){
+      const top = list[0] || movies[0];
+      const next = list.slice(1,4);
+      hero.innerHTML = `
+        <div class="hero-card">
+          <img class="hero-media" src="${top.poster}" alt="${top.title} poster"/>
+          <div class="hero-info">
+            <h2 class="hero-title">${top.title}</h2>
+            <div class="meta">${top.year} • ${top.genre}</div>
+            <p class="muted">${top.description}</p>
+            <button class="play-cta" onclick="openTrailer(${top.id})">▶ Watch Trailer</button>
+          </div>
+        </div>
+        <div class="hero-side">
+          ${next.map(n=>`
+            <div class="side-card">
+              <img class="thumb" src="${n.poster}" alt="${n.title}"/>
+              <div>
+                <div class="title-sm">${n.title}</div>
+                <div class="muted">${n.year} • ${n.genre}</div>
+                <button class="btn" onclick="openTrailer(${n.id})">Watch Trailer</button>
+              </div>
+            </div>
+          `).join('')}
+        </div>
+      `;
+    }
+
+    function renderGrid(list){
+      const start = (page-1)*PER_PAGE;
+      const slice = list.slice(start, start+PER_PAGE);
+      grid.innerHTML = slice.map(m=>`
+        <article class="card">
+          <img class="poster" src="${m.poster}" alt="${m.title} poster"/>
+          <div class="card-body">
+            <h3 class="title-sm">${m.title}</h3>
+            <div class="muted">${m.year} • ${m.genre}</div>
+            <p class="muted">${m.description}</p>
+            <button class="btn" onclick="openTrailer(${m.id})">▶ Watch Trailer</button>
+          </div>
+        </article>
+      `).join('');
+    }
+
+    function renderPager(total){
+      const pages = Math.max(1, Math.ceil(total/PER_PAGE));
+      pager.innerHTML = '';
+      const makeBtn = (p, label = p)=>{
+        const b = document.createElement('button');
+        b.className = 'page-btn' + (p===page?' active':'');
+        b.textContent = label;
+        b.onclick = ()=>{ page = p; renderAll(); window.scrollTo({top:0,behavior:'smooth'}); };
+        return b;
+      };
+      if(page>1) pager.appendChild(makeBtn(page-1,'Prev'));
+      for(let i=1;i<=pages;i++){
+        if(i===1 || i===pages || Math.abs(i-page)<=1){
+          pager.appendChild(makeBtn(i));
+        } else if(Math.abs(i-page)===2){
+          const span = document.createElement('span');
+          span.className='page-btn'; span.style.opacity=.6; span.textContent='…';
+          pager.appendChild(span);
+        }
+      }
+      if(page<pages) pager.appendChild(makeBtn(page+1,'Next'));
+    }
+
+    function renderAll(){
+      const filtered = movies.filter(byGenre).filter(byQuery);
+      renderHero(filtered);
+      renderGrid(filtered);
+      renderPager(filtered.length);
+    }
+
+    // ====== SEARCH ======
+    document.getElementById('search').addEventListener('input', (e)=>{
+      currentQuery = e.target.value; page = 1; renderAll();
+    });
+
+    // ====== MODAL PLAYER ======
+    const modal = document.getElementById('modal');
+    const playerWrap = document.getElementById('playerWrap');
+    const modalTitle = document.getElementById('modalTitle');
+    document.getElementById('closeModal').onclick = closeModal;
+    window.addEventListener('keydown',(e)=>{ if(e.key==='Escape') closeModal(); });
+
+    function openTrailer(id){
+      const m = movies.find(x=>x.id===id);
+      modalTitle.textContent = m.title + ' – Trailer';
+      playerWrap.innerHTML = `<iframe src="${m.trailer}?autoplay=1&rel=0" allow="autoplay; encrypted-media" allowfullscreen></iframe>`;
+      modal.classList.add('open');
+    }
+    function closeModal(){
+      modal.classList.remove('open');
+      playerWrap.innerHTML = '';
+    }
+
+    // ====== INIT ======
+    renderCategories();
+    renderAll();
+  </script></body>
+</html>
